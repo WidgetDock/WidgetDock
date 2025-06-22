@@ -6,8 +6,11 @@ class WidgetCenterViewModel: ObservableObject {
     @Published var selectedWidget: Widget? = nil
 
     func addWidget(from url: URL) {
-        if let widget = WidgetLoader.loadWidget(from: url) {
+        switch WidgetLoader.loadWidget(from: url) {
+        case .success(let widget):
             widgets.append(widget)
+        case .failure:
+            break // Optionally handle the error here
         }
     }
 

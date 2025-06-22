@@ -78,7 +78,6 @@ struct MainWindowView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color(.windowBackgroundColor).opacity(0.65))
             } else {
-                // Split view (sidebar + detail)
                 NavigationSplitView {
                     VStack(spacing:0) {
                         HStack {
