@@ -210,6 +210,35 @@ struct StoreView: View {
     
     var body: some View {
         ScrollView {
+            VStack(spacing: 18) {
+                Image(systemName: "star.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 56, height: 56)
+                    .foregroundColor(.yellow)
+                    .shadow(radius: 6)
+                Text("Discover New Widgets!")
+                    .font(.system(size: 28, weight: .bold, design: .rounded))
+                Text("Browse and add new widgets to personalize your dashboard.")
+                    .font(.system(.body, design: .rounded))
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 12)
+                Button(action: {
+                    // Placeholder action for 'Browse Featured' button
+                }) {
+                    Label("Browse Featured", systemImage: "sparkles")
+                        .font(.system(size: 17, weight: .semibold, design: .rounded))
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 9)
+                        .cornerRadius(24)
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: 400)
+            .padding(.horizontal, 24)
+            .padding(.top, 30)
+            .padding(.bottom, 24)
+            
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 180), spacing: 20)], spacing: 28) {
                 ForEach(filteredWidgets) { widget in
                     ZStack {
@@ -223,15 +252,6 @@ struct StoreView: View {
                         
                         VStack(spacing: 16) {
                             ZStack {
-                                Circle()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [Color.accentColor.opacity(0.3), Color.accentColor.opacity(0.1)],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing)
-                                    )
-                                    .frame(width: 96, height: 96)
-                                
                                 Image(systemName: widget.imageName)
                                     .resizable()
                                     .scaledToFit()
@@ -396,3 +416,4 @@ struct MainWindowView_Previews: PreviewProvider {
         MainWindowView(viewModel: WidgetCenterViewModel())
     }
 }
+
