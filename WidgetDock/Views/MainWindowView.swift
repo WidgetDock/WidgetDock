@@ -11,11 +11,12 @@ struct MainWindowView: View {
     @State private var alertMessage: String?
 
     enum Tab: String, CaseIterable, Identifiable {
-        case widgets, settings, about
+        case widgets, store, settings, about
         var id: Self { self }
         var label: String {
             switch self {
                 case .widgets: return "Widgets"
+                case .store: return "Store"
                 case .settings: return "Settings"
                 case .about: return "About"
             }
@@ -23,6 +24,7 @@ struct MainWindowView: View {
         var icon: String {
             switch self {
                 case .widgets: return "rectangle.grid.2x2"
+                case .store: return "cart.fill"
                 case .settings: return "gearshape"
                 case .about: return "info.circle"
             }
@@ -36,6 +38,12 @@ struct MainWindowView: View {
                     Label(Tab.widgets.label, systemImage: Tab.widgets.icon)
                 }
                 .tag(Tab.widgets)
+            
+            StoreView()
+                .tabItem {
+                    Label(Tab.store.label, systemImage: Tab.store.icon)
+                }
+                .tag(Tab.store)
             
             SettingsView()
                 .tabItem {
@@ -164,6 +172,14 @@ struct MainWindowView: View {
     }
 }
 
+// MARK: - STORE
+struct StoreView: View {
+    var body: some View {
+        Text("Coming soon...")
+    }
+}
+
+
 // MARK: - SETTINGS
 struct SettingsView: View {
     @AppStorage("autoUpdate") private var autoUpdate: Bool = true
@@ -186,38 +202,80 @@ struct SettingsView: View {
 // MARK: - ABOUT
 struct AboutView: View {
     var body: some View {
-        VStack(spacing: 28) {
-            Image("AppIconInApp")
-                .resizable()
-                .frame(width: 92, height: 92)
-                .cornerRadius(20)
-                .shadow(radius: 10)
-                .padding(.top, 24)
-                .opacity(0.96)
-            
-            Text("**WidgetCenter**\nVersion 1.0")
-                .font(.title)
-            Text("WidgetCenter is your all-in-one dashboard for managing, importing, and personalizing widgets.\n\nMade with ❤️ in SwiftUI.")
-                .multilineTextAlignment(.center)
-                .foregroundStyle(.secondary)
-            
-            Divider()
-            HStack(spacing:24) {
-                Link(destination: URL(string: "https://yourcompany.com/support")!) {
-                    Label("Support", systemImage: "questionmark.circle")
+        VStack {
+            Spacer(minLength: 28)
+            ZStack {
+                VStack(spacing: 30) {
+                    // App Icon & Title
+                    VStack(spacing: 10) {
+                        Image("AppIconInApp")
+                            .resizable()
+                            .frame(width: 96, height: 96)
+                            .cornerRadius(24)
+                            .shadow(radius: 12)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24)
+                                    .stroke(.secondary.opacity(0.15), lineWidth: 2)
+                            )
+                        Text("WidgetDock")
+                            .font(.system(size: 34, weight: .bold, design: .rounded))
+                        Text("Version 1.0")
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    // About Description
+                    Text("Your all-in-one dashboard for managing, importing, and personalizing widgets. Made with ❤️ in SwiftUI.")
+                        .font(.body)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.primary)
+                        .padding(.horizontal, 12)
+
+                    Divider()
+
+                    // Important Links
+                    VStack(spacing: 10) {
+                        HStack(spacing:28) {
+                            Link(destination: URL(string: "https://velis.me")!) {
+                                Label("Support", systemImage: "questionmark.circle")
+                            }
+                            Link(destination: URL(string: "https://github.com/widgetdock")!) {
+                                Label("GitHub", systemImage: "link")
+                            }
+                        }
+                        .font(.system(size: 16, weight: .medium))
+                    }
+
+                    // Download More Widgets
+                    VStack(spacing: 7) {
+                        Text("Looking for more widgets?")
+                            .font(.headline)
+                        Link(destination: URL(string: "https://widgetdock.store")!) {
+                            Label("Browse WidgetDock Store", systemImage: "cart")
+                                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                                .padding(.horizontal, 24)
+                                .padding(.vertical, 9)
+                                .background(Color.accentColor.opacity(0.18))
+                                .foregroundStyle(Color.accentColor)
+                                .cornerRadius(14)
+                        }
+                    }
+                    .padding(.top, 8)
+
+                    Divider()
+
+                    // Footer
+                    Text("© \(Calendar.current.component(.year, from: .now)) WidgetDock")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .padding(.bottom, 6)
                 }
-                Link(destination: URL(string: "https://github.com/yourcompany/widgetcenter")!) {
-                    Label("GitHub", systemImage: "link")
-                }
+                .padding(.vertical, 38)
+                .padding(.horizontal, 44)
             }
-            .font(.subheadline)
-            Spacer()
-            Text("© \(Calendar.current.component(.year, from: .now)) WidgetDock")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-                .padding(.bottom, 12)
+            .padding(.horizontal, 32)
+            Spacer(minLength: 30)
         }
-        .padding(.horizontal, 48)
     }
 }
 
