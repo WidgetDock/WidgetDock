@@ -187,7 +187,7 @@ struct SettingsView: View {
 struct AboutView: View {
     var body: some View {
         VStack(spacing: 28) {
-            Image("AppIcon")
+            Image("AppIconInApp")
                 .resizable()
                 .frame(width: 92, height: 92)
                 .cornerRadius(20)
@@ -195,7 +195,7 @@ struct AboutView: View {
                 .padding(.top, 24)
                 .opacity(0.96)
             
-            (Text("**WidgetCenter**\n") + Text("Version 1.0"))
+            Text("**WidgetCenter**\nVersion 1.0")
                 .font(.title)
             Text("WidgetCenter is your all-in-one dashboard for managing, importing, and personalizing widgets.\n\nMade with ❤️ in SwiftUI.")
                 .multilineTextAlignment(.center)
@@ -212,7 +212,7 @@ struct AboutView: View {
             }
             .font(.subheadline)
             Spacer()
-            Text("© \(Calendar.current.component(.year, from: .now)) Your Company")
+            Text("© \(Calendar.current.component(.year, from: .now)) WidgetDock")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 12)
