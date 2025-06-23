@@ -17,4 +17,8 @@ class WidgetCenterViewModel: ObservableObject {
     func removeWidget(_ widget: Widget) {
         widgets.removeAll { $0.id == widget.id }
     }
+
+    public func refreshWidgets() {
+        objectWillChange.send()
+    }
 }
