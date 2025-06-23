@@ -9,7 +9,7 @@ struct WidgetCenterView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Widget Center")
+            Text("WidgetDock")
                 .font(.largeTitle).bold()
                 .accessibilityAddTraits(.isHeader)
                 .padding(.top)

@@ -13,7 +13,8 @@ class StatusBarController {
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "dock.rectangle", accessibilityDescription: "WidgetDock")
+            button.image = NSImage(systemSymbolName: "star.fill", accessibilityDescription: "WidgetDock")
+            button.image?.isTemplate = true // Optional: ensures proper appearance in dark/light mode
             button.action = #selector(togglePopover(_:))
             button.target = self
         }
@@ -28,3 +29,4 @@ class StatusBarController {
         }
     }
 }
+
