@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 import UniformTypeIdentifiers
 
+private let customBG = Color(red: 30/255, green: 30/255, blue: 30/255)
 
 // MARK: - MAIN WINDOW
 
@@ -62,6 +63,7 @@ struct MainWindowView: View {
         }
         .animation(.easeInOut, value: selectedTab)
         .frame(minWidth: 950, minHeight: 560)
+        .background(customBG)
     }
     
     var widgetsTab: some View {
@@ -84,7 +86,7 @@ struct MainWindowView: View {
                     Spacer()
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color(.windowBackgroundColor).opacity(0.65))
+                .background(customBG)
             } else {
                 NavigationSplitView {
                     VStack(spacing:0) {
@@ -142,7 +144,7 @@ struct MainWindowView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
-                .background(Color(.windowBackgroundColor))
+                .background(customBG)
             }
         }
     }
@@ -174,8 +176,114 @@ struct MainWindowView: View {
 
 // MARK: - STORE
 struct StoreView: View {
+    struct StoreWidget: Identifiable {
+        let id = UUID()
+        let name: String
+        let description: String
+        let imageName: String
+    }
+
+    @State private var searchText: String = ""
+    
+    private let widgets: [StoreWidget] = [
+        StoreWidget(name: "Weather Widget", description: "Get the latest weather updates.", imageName: "cloud.sun.fill"),
+        StoreWidget(name: "Calendar Widget", description: "Keep track of your events.", imageName: "calendar"),
+        StoreWidget(name: "News Widget", description: "Stay informed with news headlines.", imageName: "newspaper.fill"),
+        StoreWidget(name: "Fitness Widget", description: "Monitor your daily activity.", imageName: "heart.fill"),
+        StoreWidget(name: "Stock Widget", description: "Track your favorite stocks.", imageName: "chart.line.uptrend.xyaxis"),
+        StoreWidget(name: "Music Widget", description: "Control your music playback.", imageName: "music.note.list"),
+        StoreWidget(name: "Reminder Widget", description: "Never forget your tasks.", imageName: "bell.fill"),
+        StoreWidget(name: "Quotes Widget", description: "Daily inspiration at a glance.", imageName: "quote.bubble.fill"),
+        StoreWidget(name: "Photo Widget", description: "Showcase your favorite photos.", imageName: "photo.fill.on.rectangle.fill")
+    ]
+    
+    var filteredWidgets: [StoreWidget] {
+        if searchText.isEmpty {
+            return widgets
+        } else {
+            return widgets.filter {
+                $0.name.localizedCaseInsensitiveContains(searchText) ||
+                $0.description.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
     var body: some View {
-        Text("Coming soon...")
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 180), spacing: 20)], spacing: 28) {
+                ForEach(filteredWidgets) { widget in
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .fill(.ultraThinMaterial)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .fill(Color(NSColor.windowBackgroundColor).opacity(0.6))
+                            )
+                            .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 6)
+                        
+                        VStack(spacing: 16) {
+                            ZStack {
+                                Circle()
+                                    .fill(
+                                        LinearGradient(
+                                            colors: [Color.accentColor.opacity(0.3), Color.accentColor.opacity(0.1)],
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing)
+                                    )
+                                    .frame(width: 96, height: 96)
+                                
+                                Image(systemName: widget.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 80)
+                            }
+                            
+                            Text(widget.name)
+                                .font(.system(.headline, design: .rounded))
+                                .fontWeight(.semibold)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(2)
+                                .minimumScaleFactor(0.75)
+                            
+                            Text(widget.description)
+                                .font(.system(.subheadline, design: .rounded))
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                                .lineLimit(3)
+                                .padding(.horizontal, 8)
+                            
+                            Button(action: {
+                                // Placeholder action for "Get" button
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "plus")
+                                        .font(.system(size: 14, weight: .bold))
+                                    Text("Get")
+                                        .font(.system(size: 15, weight: .semibold))
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 10)
+                                .background(Color.accentColor)
+                                .foregroundColor(.white)
+                                .cornerRadius(12)
+                                .shadow(color: Color.accentColor.opacity(0.3), radius: 5, x: 0, y: 3)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            .padding(.horizontal, 16)
+                            .padding(.bottom, 14)
+                        }
+                        .padding(.top, 22)
+                        .padding(.horizontal, 12)
+                    }
+                    .frame(minHeight: 280)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+        }
+        .searchable(text: $searchText, prompt: "Search widgets")
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(customBG)
     }
 }
 
@@ -195,7 +303,8 @@ struct SettingsView: View {
             }
         }
         .padding(32)
-        .frame(maxWidth: 560)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(customBG)
     }
 }
 
@@ -275,6 +384,9 @@ struct AboutView: View {
             }
             .padding(.horizontal, 32)
             Spacer(minLength: 30)
+                .background(customBG)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(customBG)
         }
     }
 }
@@ -284,4 +396,3 @@ struct MainWindowView_Previews: PreviewProvider {
         MainWindowView(viewModel: WidgetCenterViewModel())
     }
 }
-
